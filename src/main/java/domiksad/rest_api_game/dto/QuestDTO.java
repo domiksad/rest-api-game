@@ -2,19 +2,29 @@ package domiksad.rest_api_game.dto;
 
 import domiksad.rest_api_game.enums.DangerLevel;
 import domiksad.rest_api_game.enums.QuestStatus;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class QuestDTO {
     private Long id;
+
+    @NotBlank(message = "Field name is required and cannot be empty")
     private String name;
+
+    @NotBlank(message = "Field description is required and cannot be empty")
     private String description;
+
+    @NotBlank(message = "Field reward is required and cannot be empty")
     private String reward;
 
+    @NotNull(message = "Field dangerLevel is required")
     private DangerLevel dangerLevel;
+
+    @NotNull(message = "Field questStatus is required")
     private QuestStatus questStatus;
 
     protected QuestDTO(){}
     public QuestDTO(String name, String description, String reward, DangerLevel dangerLevel) {
-        this.id = id;
         this.name = name;
         this.description = description;
         this.reward = reward;

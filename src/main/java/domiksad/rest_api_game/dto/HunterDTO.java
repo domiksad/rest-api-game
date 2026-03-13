@@ -1,7 +1,11 @@
 package domiksad.rest_api_game.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class HunterDTO {
     private Long id;
+
+    @NotBlank(message = "Field name is required and cannot be empty")
     private String name;
 
     public HunterDTO(){}

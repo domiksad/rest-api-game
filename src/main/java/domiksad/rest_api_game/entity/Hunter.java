@@ -1,6 +1,10 @@
 package domiksad.rest_api_game.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,10 +41,11 @@ public class Hunter {
         this.name = name;
     }
 
+    public boolean isQuestAlreadyAssigned(Quest quest) {
+        return assignedQuests.contains(quest);
+    }
     public void assignQuest(Quest quest) {
-        if (!assignedQuests.contains(quest)) {
-            assignedQuests.add(quest);
-        }
+        assignedQuests.add(quest);
     }
     public void removeQuest(Quest quest) {
         assignedQuests.remove(quest);

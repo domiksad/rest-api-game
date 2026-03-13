@@ -1,6 +1,7 @@
 package domiksad.rest_api_game.service;
 
 import domiksad.rest_api_game.dto.HunterDTO;
+import domiksad.rest_api_game.dto.QuestDTO;
 import domiksad.rest_api_game.entity.Hunter;
 import domiksad.rest_api_game.repository.HunterRepository;
 import domiksad.rest_api_game.repository.QuestRepository;
@@ -26,12 +27,6 @@ public class HunterService {
     public HunterDTO createHunter(HunterDTO hunterDTO) {
         Hunter hunter = mapper.map(hunterDTO, Hunter.class);
 
-        if(hunter.getName() == null || hunter.getName().isBlank())
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Field name is required and cannot be empty"
-            );
-
         Hunter savedHunter = hunterRepository.save(hunter);
 
         HunterDTO responseDTO = mapper.map(savedHunter, HunterDTO.class);
@@ -48,5 +43,26 @@ public class HunterService {
     public HunterDTO getHunterById(Long id){
         return mapper.map(hunterRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND)), HunterDTO.class);
+    }
+
+    public void deleteHunterById(Long id){
+        hunterRepository.deleteById(id);
+    }
+
+    public List<QuestDTO> getHunterAssignedQuestsById(Long id) {
+        return hunterRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND)).getAssignedQuests()
+                .stream().map(q -> mapper.map(q, QuestDTO.class))
+                .toList();
+
+    }
+
+    public HunterDTO updateHunter(Long id, HunterDTO hunterDTO) {
+        Hunter hunter = hunterRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Hunter newHunter = mapper.map(hunterDTO, Hunter.class);
+        newHunter.setId(hunter.getId());
+
+        hunterRepository.save(newHunter);
+        return mapper.map(newHunter, HunterDTO.class);
     }
 }

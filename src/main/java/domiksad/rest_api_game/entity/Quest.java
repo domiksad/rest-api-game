@@ -2,7 +2,13 @@ package domiksad.rest_api_game.entity;
 
 import domiksad.rest_api_game.enums.DangerLevel;
 import domiksad.rest_api_game.enums.QuestStatus;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,13 +18,16 @@ import java.util.List;
 public class Quest {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     private String name;
     private String description;
     private String reward;
 
+    @Enumerated(EnumType.STRING)
     private DangerLevel dangerLevel;
+
+    @Enumerated(EnumType.STRING)
     private QuestStatus questStatus;
 
     @ManyToMany
@@ -75,10 +84,11 @@ public class Quest {
         this.questStatus = questStatus;
     }
 
+    public boolean isHunterAlreadyAssigned(Hunter hunter) {
+        return assignedHunters.contains(hunter);
+    }
     public void assignHunter(Hunter hunter) {
-        if (!assignedHunters.contains(hunter)) {
-            assignedHunters.add(hunter);
-        }
+        assignedHunters.add(hunter);
     }
     public void removeHunter(Hunter hunter) {
         assignedHunters.remove(hunter);
