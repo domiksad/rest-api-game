@@ -35,24 +35,24 @@ Domyślnie API działa pod adresem:
 
 ## API Endpoints
 ### Hunter
-Metoda | Endpoint	| Opis
-|:-:|:-:|:-:|
-GET | /api/hunters | Pobierz listę hunterów
-GET | /api/hunters/{id}	| Pobierz pojedynczego huntera
-POST | /api/hunters |	Dodaj nowego huntera
-PATCH	| /api/hunters/{id}	| Zaktualizuj huntera
+Metoda |     Endpoint      | Opis
+|:-:|:-----------------:|:-:|
+GET |   /api/hunters    | Pobierz listę hunterów
+GET |/api/hunters/{id}	 | Pobierz pojedynczego huntera
+POST |   /api/hunters    |	Dodaj nowego huntera
+PATCH	|/api/hunters/{id}	 | Zaktualizuj huntera
 DELETE | /api/hunters/{id} | Usuń huntera
 
 ### Quest
-Metoda | Endpoint | Opis
-|:-:|:-:|:-:|
-GET | /api/quests |	Pobierz listę questów
+Metoda |                            Endpoint                             | Opis
+|:-:|:---------------------------------------------------------------:|:-:|
+GET |                           /api/quests                           |	Pobierz listę questów
 GET | /api/quests?dangerLevel={dangerLevel}&questStatus={questStatus} | Pobierz listę questów z filtrami
-GET | /api/quests/{id} | Pobierz pojedynczy quest
-POST | /api/quests | Dodaj nowy quest
-POST | /api/quests/{id}/complete | Zakończ quest
-PATCH | /api/quests/{id} | Zaktualizuj quest
-DELETE | /api/quests/{id} | Usuń quest
+GET |                        /api/quests/{id}                         | Pobierz pojedynczy quest
+POST |                           /api/quests                           | Dodaj nowy quest
+POST |                    /api/quests/{id}/complete                    | Zakończ quest
+PATCH |                        /api/quests/{id}                         | Zaktualizuj quest
+DELETE |                        /api/quests/{id}                         | Usuń quest
 
 Przykłady żądań
 Dodanie nowego huntera

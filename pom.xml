@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>domiksad</groupId>
-	<artifactId>rest-api-game</artifactId>
+	<artifactId>restapigame</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>rest-api-game</name>
+	<name>restapigame</name>
 	<description>Rest api for a game</description>
 	<url/>
 	<licenses>
@@ -78,10 +78,40 @@
             <version>3.2.6</version>
             <scope>compile</scope>
         </dependency>
+        <!-- Source: https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.44</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Source: https://mvnrepository.com/artifact/org.modelmapper/modelmapper-module-record -->
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper-module-record</artifactId>
+            <version>1.0.1</version>
+            <scope>compile</scope>
+        </dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.15.0</version>
+                <configuration>
+                    <source>25</source>
+                    <target>25</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.44</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
