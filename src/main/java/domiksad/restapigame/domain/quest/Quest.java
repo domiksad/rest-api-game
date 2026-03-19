@@ -1,7 +1,9 @@
 package domiksad.restapigame.domain.quest;
 
+import domiksad.restapigame.domain.exception.WorldLogicException;
 import domiksad.restapigame.domain.hunter.Hunter;
 import java.util.Set;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Quest {
-  private Long id;
+  private UUID id;
 
   private String name;
   private String description;
@@ -24,12 +26,14 @@ public class Quest {
   private Set<Hunter> assignedHunters;
 
   public void assignHunter(Hunter hunter) {
+    if (questStatus == QuestStatus.FINISHED)
+      throw new WorldLogicException("Cant assign hunters to finished quests");
     assignedHunters.add(hunter);
     hunter.assignQuest(this);
   }
 
-  public void complete(){
-    questStatus = QuestStatus.COMPLETED;
+  public void complete() {
+    questStatus = QuestStatus.FINISHED;
   }
 
   @Override

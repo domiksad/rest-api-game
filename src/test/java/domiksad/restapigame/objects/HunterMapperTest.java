@@ -1,4 +1,4 @@
-package domiksad.restapigame;
+package domiksad.restapigame.objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,6 +14,7 @@ import domiksad.restapigame.presentation.dto.HunterRequestDto;
 import domiksad.restapigame.presentation.dto.HunterResponseDto;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -28,8 +29,8 @@ public class HunterMapperTest {
   }
 
   private Set<QuestEntity> getQuestEntitySet() {
-    QuestEntity q1 = new QuestEntity(1L, "Quest1", "Desc1", "Reward1", DangerLevel.LOW, QuestStatus.CREATED, new HashSet<>());
-    QuestEntity q2 = new QuestEntity(2L, "Quest2", "Desc2", "Reward2", DangerLevel.MEDIUM, QuestStatus.COMPLETED, new HashSet<>());
+    QuestEntity q1 = new QuestEntity(UUID.randomUUID(), "Quest1", "Desc1", "Reward1", DangerLevel.LOW, QuestStatus.CREATED, new HashSet<>());
+    QuestEntity q2 = new QuestEntity(UUID.randomUUID(), "Quest2", "Desc2", "Reward2", DangerLevel.MEDIUM, QuestStatus.FINISHED, new HashSet<>());
     Set<QuestEntity> quests = new HashSet<>();
     quests.add(q1);
     quests.add(q2);
@@ -37,8 +38,8 @@ public class HunterMapperTest {
   }
 
   private Set<Quest> getQuestDomainSet() {
-    Quest q1 = new Quest(1L, "Quest1", "Desc1", "Reward1", DangerLevel.LOW, QuestStatus.CREATED, new HashSet<>());
-    Quest q2 = new Quest(2L, "Quest2", "Desc2", "Reward2", DangerLevel.MEDIUM, QuestStatus.COMPLETED, new HashSet<>());
+    Quest q1 = new Quest(UUID.randomUUID(), "Quest1", "Desc1", "Reward1", DangerLevel.LOW, QuestStatus.CREATED, new HashSet<>());
+    Quest q2 = new Quest(UUID.randomUUID(), "Quest2", "Desc2", "Reward2", DangerLevel.MEDIUM, QuestStatus.FINISHED, new HashSet<>());
     Set<Quest> quests = new HashSet<>();
     quests.add(q1);
     quests.add(q2);
@@ -57,11 +58,11 @@ public class HunterMapperTest {
 
   @Test
   void entityToDomain() {
-    HunterEntity h1 = new HunterEntity(1L, "John", getQuestEntitySet());
+    HunterEntity h1 = new HunterEntity(UUID.randomUUID(), "John", getQuestEntitySet());
     Hunter h2 = mapper.map(h1, Hunter.class);
 
-    assertEquals(1L, h2.getId());
-    assertEquals("John", h2.getName());
+    assertEquals(h1.getId(), h2.getId());
+    assertEquals(h1.getName(), h2.getName());
 
     h1.getAssignedQuests().forEach(qe ->
         assertTrue(h2.getAssignedQuests().stream()
@@ -71,11 +72,11 @@ public class HunterMapperTest {
 
   @Test
   void domainToEntity() {
-    Hunter h1 = new Hunter(1L, "John", getQuestDomainSet());
+    Hunter h1 = new Hunter(UUID.randomUUID(), "John", getQuestDomainSet());
     HunterEntity h2 = mapper.map(h1, HunterEntity.class);
 
-    assertEquals(1L, h2.getId());
-    assertEquals("John", h2.getName());
+    assertEquals(h1.getId(), h2.getId());
+    assertEquals(h1.getName(), h2.getName());
 
     h1.getAssignedQuests().forEach(q ->
         assertTrue(h2.getAssignedQuests().stream()
@@ -85,17 +86,17 @@ public class HunterMapperTest {
 
   @Test
   void entityToResponseDto() {
-    HunterEntity h1 = new HunterEntity(1L, "John", new HashSet<>());
+    HunterEntity h1 = new HunterEntity(UUID.randomUUID(), "John", new HashSet<>());
     HunterResponseDto h2 = mapper.map(h1, HunterResponseDto.class);
 
-    assertEquals(1L, h2.id());
-    assertEquals("John", h2.name());
+    assertEquals(h1.getId(), h2.id());
+    assertEquals(h1.getName(), h2.name());
   }
 
   @Test
   void testBiDirectionalMapping_noInfiniteLoop() {
-    Hunter hunter = new Hunter(1L, "John", new HashSet<>());
-    Quest quest = new Quest(1L, "Quest1", "Desc", "Reward", DangerLevel.LOW, QuestStatus.CREATED, new HashSet<>());
+    Hunter hunter = new Hunter(UUID.randomUUID(), "John", new HashSet<>());
+    Quest quest = new Quest(UUID.randomUUID(), "Quest1", "Desc", "Reward", DangerLevel.LOW, QuestStatus.CREATED, new HashSet<>());
     hunter.getAssignedQuests().add(quest);
     quest.getAssignedHunters().add(hunter);
 

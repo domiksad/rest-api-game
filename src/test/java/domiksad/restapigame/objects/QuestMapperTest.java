@@ -1,4 +1,4 @@
-package domiksad.restapigame;
+package domiksad.restapigame.objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -14,6 +14,7 @@ import domiksad.restapigame.infrastructure.entity.QuestEntity;
 import domiksad.restapigame.presentation.dto.QuestRequestDto;
 import domiksad.restapigame.presentation.dto.QuestResponseDto;
 import java.util.HashSet;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -28,8 +29,8 @@ public class QuestMapperTest {
   }
 
   private HashSet<HunterEntity> getHunterEntitySet() {
-    HunterEntity h1 = new HunterEntity(1L, "Alice", new HashSet<>());
-    HunterEntity h2 = new HunterEntity(2L, "Bob", new HashSet<>());
+    HunterEntity h1 = new HunterEntity(UUID.randomUUID(), "Alice", new HashSet<>());
+    HunterEntity h2 = new HunterEntity(UUID.randomUUID(), "Bob", new HashSet<>());
     HashSet<HunterEntity> hunters = new HashSet<>();
     hunters.add(h1);
     hunters.add(h2);
@@ -37,8 +38,8 @@ public class QuestMapperTest {
   }
 
   private HashSet<Hunter> getHunterDomainSet() {
-    Hunter h1 = new Hunter(1L, "Alice", new HashSet<>());
-    Hunter h2 = new Hunter(2L, "Bob", new HashSet<>());
+    Hunter h1 = new Hunter(UUID.randomUUID(), "Alice", new HashSet<>());
+    Hunter h2 = new Hunter(UUID.randomUUID(), "Bob", new HashSet<>());
     HashSet<Hunter> hunters = new HashSet<>();
     hunters.add(h1);
     hunters.add(h2);
@@ -53,10 +54,10 @@ public class QuestMapperTest {
         new QuestRequestDto("Quest", "Test quest", "Happy developer", DangerLevel.LOW);
     QuestEntity q2 = mapper.map(q1, QuestEntity.class);
 
-    assertEquals("Quest", q2.getName());
-    assertEquals("Test quest", q2.getDescription());
-    assertEquals("Happy developer", q2.getReward());
-    assertEquals(DangerLevel.LOW, q2.getDangerLevel());
+    assertEquals(q1.name(), q2.getName());
+    assertEquals(q1.description(), q2.getDescription());
+    assertEquals(q1.reward(), q2.getReward());
+    assertEquals(q1.dangerLevel(), q2.getDangerLevel());
     assertEquals(QuestStatus.CREATED, q2.getQuestStatus());
   }
 
@@ -64,21 +65,21 @@ public class QuestMapperTest {
   void entityToDomain() {
     QuestEntity q1 =
         new QuestEntity(
-            1L,
+            UUID.randomUUID(),
             "Quest",
             "Test quest",
             "Happy developer",
             DangerLevel.LOW,
-            QuestStatus.COMPLETED,
+            QuestStatus.FINISHED,
             getHunterEntitySet());
     Quest q2 = mapper.map(q1, Quest.class);
 
-    assertEquals(1L, q2.getId());
-    assertEquals("Quest", q2.getName());
-    assertEquals("Test quest", q2.getDescription());
-    assertEquals("Happy developer", q2.getReward());
-    assertEquals(DangerLevel.LOW, q2.getDangerLevel());
-    assertEquals(QuestStatus.COMPLETED, q2.getQuestStatus());
+    assertEquals(q1.getId(), q2.getId());
+    assertEquals(q1.getName(), q2.getName());
+    assertEquals(q1.getDescription(), q2.getDescription());
+    assertEquals(q1.getReward(), q2.getReward());
+    assertEquals(q1.getDangerLevel(), q2.getDangerLevel());
+    assertEquals(q1.getQuestStatus(), q2.getQuestStatus());
     q1.getAssignedHunters()
         .forEach(
             he ->
@@ -93,21 +94,21 @@ public class QuestMapperTest {
   void domainToEntity() {
     Quest q1 =
         new Quest(
-            1L,
+            UUID.randomUUID(),
             "Quest",
             "Test quest",
             "Happy developer",
             DangerLevel.LOW,
-            QuestStatus.COMPLETED,
+            QuestStatus.FINISHED,
             new HashSet<>());
     QuestEntity q2 = mapper.map(q1, QuestEntity.class);
 
-    assertEquals(1L, q2.getId());
-    assertEquals("Quest", q2.getName());
-    assertEquals("Test quest", q2.getDescription());
-    assertEquals("Happy developer", q2.getReward());
-    assertEquals(DangerLevel.LOW, q2.getDangerLevel());
-    assertEquals(QuestStatus.COMPLETED, q2.getQuestStatus());
+    assertEquals(q1.getId(), q2.getId());
+    assertEquals(q1.getName(), q2.getName());
+    assertEquals(q1.getDescription(), q2.getDescription());
+    assertEquals(q1.getReward(), q2.getReward());
+    assertEquals(q1.getDangerLevel(), q2.getDangerLevel());
+    assertEquals(q1.getQuestStatus(), q2.getQuestStatus());
     q1.getAssignedHunters()
         .forEach(
             h ->
@@ -122,29 +123,29 @@ public class QuestMapperTest {
   void entityToResponseDto() {
     QuestEntity q1 =
         new QuestEntity(
-            1L,
+            UUID.randomUUID(),
             "Quest",
             "Test quest",
             "Happy developer",
             DangerLevel.LOW,
-            QuestStatus.COMPLETED,
+            QuestStatus.FINISHED,
             new HashSet<>());
     QuestResponseDto q2 = mapper.map(q1, QuestResponseDto.class);
 
-    assertEquals(1L, q2.id());
-    assertEquals("Quest", q2.name());
-    assertEquals("Test quest", q2.description());
-    assertEquals("Happy developer", q2.reward());
-    assertEquals(DangerLevel.LOW, q2.dangerLevel());
-    assertEquals(QuestStatus.COMPLETED, q2.questStatus());
+    assertEquals(q1.getId(), q2.id());
+    assertEquals(q1.getName(), q2.name());
+    assertEquals(q1.getDescription(), q2.description());
+    assertEquals(q1.getReward(), q2.reward());
+    assertEquals(q1.getDangerLevel(), q2.dangerLevel());
+    assertEquals(q1.getQuestStatus(), q2.questStatus());
   }
 
   @Test
   void testBiDirectionalMapping_noInfiniteLoop() {
     Quest quest =
         new Quest(
-            1L, "Quest", "Desc", "Reward", DangerLevel.LOW, QuestStatus.CREATED, new HashSet<>());
-    Hunter hunter = new Hunter(1L, "Alice", new HashSet<>());
+            UUID.randomUUID(), "Quest", "Desc", "Reward", DangerLevel.LOW, QuestStatus.CREATED, new HashSet<>());
+    Hunter hunter = new Hunter(UUID.randomUUID(), "Alice", new HashSet<>());
     quest.getAssignedHunters().add(hunter);
     hunter.getAssignedQuests().add(quest);
 

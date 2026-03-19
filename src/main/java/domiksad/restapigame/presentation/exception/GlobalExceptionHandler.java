@@ -1,5 +1,8 @@
 package domiksad.restapigame.presentation.exception;
 
+import domiksad.restapigame.application.exception.HunterNotFound;
+import domiksad.restapigame.application.exception.QuestNotFound;
+import domiksad.restapigame.domain.exception.WorldLogicException;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
@@ -75,4 +78,34 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(body, code);
     }
+
+  @ExceptionHandler({QuestNotFound.class, HunterNotFound.class})
+  public ResponseEntity<Map<String, Object>> handleNotFound(Exception ex) {
+    logger.warning(ex.getMessage());
+
+    HttpStatus code = HttpStatus.NOT_FOUND;
+
+    Map<String, Object> body = Map.of(
+        "timestamp", Instant.now(),
+        "status", code.value(),
+        "error", ex.getMessage()
+    );
+
+    return new ResponseEntity<>(body, code);
+  }
+
+  @ExceptionHandler(WorldLogicException.class)
+  public ResponseEntity<Map<String, Object>> handleWorldLogic(WorldLogicException ex) {
+    logger.warning(ex.getMessage());
+
+    HttpStatus code = HttpStatus.BAD_REQUEST;
+
+    Map<String, Object> body = Map.of(
+        "timestamp", Instant.now(),
+        "status", code.value(),
+        "error", ex.getMessage()
+    );
+
+    return new ResponseEntity<>(body, code);
+  }
 }

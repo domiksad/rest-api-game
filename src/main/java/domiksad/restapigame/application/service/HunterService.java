@@ -9,6 +9,7 @@ import domiksad.restapigame.presentation.dto.HunterResponseDto;
 import domiksad.restapigame.presentation.dto.QuestResponseDto;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -36,18 +37,18 @@ public class HunterService {
         .toList();
   }
 
-  public HunterResponseDto getHunterById(Long id) {
+  public HunterResponseDto getHunterById(UUID id) {
     return mapper.map(
         hunterRepository.findById(id).orElseThrow(() -> new HunterNotFound(id)),
         HunterResponseDto.class);
   }
 
-  public void deleteHunterById(Long id) {
+  public void deleteHunterById(UUID id) {
     hunterRepository.delete(
         hunterRepository.findById(id).orElseThrow(() -> new HunterNotFound(id)));
   }
 
-  public List<QuestResponseDto> getHunterAssignedQuestsById(Long id) {
+  public List<QuestResponseDto> getHunterAssignedQuestsById(UUID id) {
     return hunterRepository
         .findById(id)
         .orElseThrow(() -> new HunterNotFound(id))
@@ -57,7 +58,7 @@ public class HunterService {
         .toList();
   }
 
-  public HunterResponseDto updateHunter(Long id, HunterRequestDto hunterDto) {
+  public HunterResponseDto updateHunter(UUID id, HunterRequestDto hunterDto) {
     HunterEntity hunter = hunterRepository.findById(id).orElseThrow(() -> new HunterNotFound(id));
 
     hunter.setName(hunterDto.name());

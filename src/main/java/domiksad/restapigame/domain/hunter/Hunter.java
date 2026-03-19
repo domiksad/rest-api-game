@@ -2,6 +2,7 @@ package domiksad.restapigame.domain.hunter;
 
 import domiksad.restapigame.domain.quest.Quest;
 import java.util.Set;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Hunter {
-  private Long id;
+  private UUID id;
 
   private String name;
 

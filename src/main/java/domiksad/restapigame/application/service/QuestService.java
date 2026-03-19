@@ -15,6 +15,7 @@ import domiksad.restapigame.presentation.dto.QuestRequestDto;
 import domiksad.restapigame.presentation.dto.QuestResponseDto;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -36,17 +37,17 @@ public class QuestService {
     return mapper.map(savedQuest, QuestResponseDto.class);
   }
 
-  public QuestResponseDto getQuestById(Long id) {
+  public QuestResponseDto getQuestById(UUID id) {
     return mapper.map(
         questRepository.findById(id).orElseThrow(() -> new QuestNotFound(id)),
         QuestResponseDto.class);
   }
 
-  public void deleteQuestById(Long id) {
+  public void deleteQuestById(UUID id) {
     questRepository.delete(questRepository.findById(id).orElseThrow(() -> new QuestNotFound(id)));
   }
 
-  public List<HunterResponseDto> getQuestAssignedHuntersById(Long id) {
+  public List<HunterResponseDto> getQuestAssignedHuntersById(UUID id) {
     return questRepository
         .findById(id)
         .orElseThrow(() -> new QuestNotFound(id))
@@ -56,7 +57,7 @@ public class QuestService {
         .toList();
   }
 
-  public void assignQuestToHunter(Long questId, Long hunterId) {
+  public void assignQuestToHunter(UUID questId, UUID hunterId) {
     Quest quest =
         mapper.map(
             questRepository.findById(questId).orElseThrow(() -> new QuestNotFound(questId)),
@@ -72,7 +73,7 @@ public class QuestService {
     hunterRepository.save(mapper.map(hunter, HunterEntity.class));
   }
 
-  public QuestResponseDto completeTaskById(Long id) {
+  public QuestResponseDto completeTaskById(UUID id) {
     Quest quest = mapper.map(
         questRepository
             .findById(id)
@@ -86,7 +87,7 @@ public class QuestService {
     return mapper.map(questEntity, QuestResponseDto.class);
   }
 
-  public QuestResponseDto updateQuest(Long id, QuestRequestDto questDto) {
+  public QuestResponseDto updateQuest(UUID id, QuestRequestDto questDto) {
     QuestEntity quest =
         questRepository
             .findById(id)

@@ -6,6 +6,7 @@ import domiksad.restapigame.presentation.dto.HunterResponseDto;
 import domiksad.restapigame.presentation.dto.QuestResponseDto;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class HunterController {
 
   @PutMapping("/api/hunters/{id}")
   public ResponseEntity<HunterResponseDto> updateHunter(
-      @PathVariable Long id, @Valid @RequestBody HunterRequestDto hunterDTO) {
+      @PathVariable UUID id, @Valid @RequestBody HunterRequestDto hunterDTO) {
 
     return ResponseEntity.status(HttpStatus.OK).body(hunterService.updateHunter(id, hunterDTO));
   }
@@ -42,18 +43,18 @@ public class HunterController {
   }
 
   @GetMapping("/api/hunters/{id}")
-  public ResponseEntity<HunterResponseDto> getHunterById(@PathVariable("id") Long id) {
+  public ResponseEntity<HunterResponseDto> getHunterById(@PathVariable("id") UUID id) {
     return ResponseEntity.status(HttpStatus.OK).body(hunterService.getHunterById(id));
   }
 
   @GetMapping("/api/hunters/{id}/quests")
   public ResponseEntity<List<QuestResponseDto>> getHunterAssignedQuestsById(
-      @PathVariable("id") Long id) {
+      @PathVariable("id") UUID id) {
     return ResponseEntity.status(HttpStatus.OK).body(hunterService.getHunterAssignedQuestsById(id));
   }
 
   @DeleteMapping("/api/hunters/{id}")
-  public ResponseEntity<Void> deleteHunter(@PathVariable("id") Long id) {
+  public ResponseEntity<Void> deleteHunter(@PathVariable("id") UUID id) {
     hunterService.deleteHunterById(id);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }

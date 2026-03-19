@@ -8,6 +8,7 @@ import domiksad.restapigame.presentation.dto.QuestRequestDto;
 import domiksad.restapigame.presentation.dto.QuestResponseDto;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class QuestController {
 
   @PutMapping("/api/quests/{id}")
   public ResponseEntity<QuestResponseDto> updateQuest(
-      @PathVariable Long id, @Valid @RequestBody QuestRequestDto questDTO) {
+      @PathVariable UUID id, @Valid @RequestBody QuestRequestDto questDTO) {
     return ResponseEntity.status(HttpStatus.OK).body(questService.updateQuest(id, questDTO));
   }
 
@@ -48,31 +49,31 @@ public class QuestController {
   }
 
   @GetMapping("/api/quests/{id}")
-  public ResponseEntity<QuestResponseDto> getQuestById(@PathVariable("id") Long id) {
+  public ResponseEntity<QuestResponseDto> getQuestById(@PathVariable("id") UUID id) {
     return ResponseEntity.status(HttpStatus.OK).body(questService.getQuestById(id));
   }
 
   @GetMapping("/api/quests/{id}/hunters")
   public ResponseEntity<List<HunterResponseDto>> getQuestAssignedHuntersById(
-      @PathVariable("id") Long id) {
+      @PathVariable("id") UUID id) {
     return ResponseEntity.status(HttpStatus.OK).body(questService.getQuestAssignedHuntersById(id));
   }
 
   @PostMapping("/api/quests/{questId}/hunters/{hunterId}")
   public ResponseEntity<Void> assignQuestToHunter(
-      @PathVariable("questId") Long questId, @PathVariable("hunterId") Long hunterId) {
+      @PathVariable("questId") UUID questId, @PathVariable("hunterId") UUID hunterId) {
     questService.assignQuestToHunter(questId, hunterId);
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   @DeleteMapping("/api/quests/{id}")
-  public ResponseEntity<Void> deleteQuest(@PathVariable("id") Long id) {
+  public ResponseEntity<Void> deleteQuest(@PathVariable("id") UUID id) {
     questService.deleteQuestById(id);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
   @PostMapping("/api/quests/{id}/complete")
-  public ResponseEntity<QuestResponseDto> completeTaskById(@PathVariable("id") Long id) {
+  public ResponseEntity<QuestResponseDto> completeTaskById(@PathVariable("id") UUID id) {
     return ResponseEntity.status(HttpStatus.OK).body(questService.completeTaskById(id));
   }
 }

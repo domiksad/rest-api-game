@@ -1,4 +1,4 @@
-package domiksad.restapigame;
+package domiksad.restapigame.objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -8,14 +8,18 @@ import domiksad.restapigame.domain.quest.DangerLevel;
 import domiksad.restapigame.domain.quest.Quest;
 import domiksad.restapigame.domain.quest.QuestStatus;
 import java.util.HashSet;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 public class EqualsAndHashTest {
   @Test
   void testQuestEqualsAndHashCode() {
+    final UUID u1 = UUID.randomUUID();
+    final UUID u2 = UUID.randomUUID();
+
     Quest q1 =
         new Quest(
-            1L,
+            u1,
             "Quest1",
             "Desc1",
             "Reward1",
@@ -24,7 +28,7 @@ public class EqualsAndHashTest {
             new HashSet<>());
     Quest q2 =
         new Quest(
-            1L,
+            u1,
             "Quest1",
             "Desc1",
             "Reward1",
@@ -33,12 +37,12 @@ public class EqualsAndHashTest {
             new HashSet<>());
     Quest q3 =
         new Quest(
-            2L,
+            u2,
             "Quest2",
             "Desc2",
             "Reward2",
             DangerLevel.MEDIUM,
-            QuestStatus.COMPLETED,
+            QuestStatus.FINISHED,
             new HashSet<>());
 
     assertEquals(q1, q2);
@@ -56,9 +60,12 @@ public class EqualsAndHashTest {
 
   @Test
   void testHunterEqualsAndHashCode() {
-    Hunter h1 = new Hunter(1L, "Alice", new HashSet<>());
-    Hunter h2 = new Hunter(1L, "Alice", new HashSet<>());
-    Hunter h3 = new Hunter(2L, "Bob", new HashSet<>());
+    UUID u1 = UUID.randomUUID();
+    UUID u2 = UUID.randomUUID();
+
+    Hunter h1 = new Hunter(u1, "Alice", new HashSet<>());
+    Hunter h2 = new Hunter(u1, "Alice", new HashSet<>());
+    Hunter h3 = new Hunter(u2, "Bob", new HashSet<>());
 
     assertEquals(h1, h2);
     assertNotEquals(h1, h3);
